@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f1f1;
+  z-index: 999;
+}
+
+header .brand {
+  font-size: 20px;
+  text-decoration: none;
+  margin-left: 20px;
+  font-family: cursive;
+  color: #888;
+  max-width: 119px;
+  transition: 0.3s;
+}
+
+header .brand:hover {
+  color: #444;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 60px;
+  width: 80px;
+  height: 100%;
+  background: rgb(207, 207, 207);
+  display: flex;
+  justify-content: center;
+}
+
+.controls .control {
+  width: 65px;
+  background: #fcfcfc;
+  color: #666;
+  padding: 10px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+  user-select: none;
+  transition: 0.3s;
+}
+
+.controls .control input{
+    width: 90%;
+    margin-top: 7px;
+}
+
+.controls .control:hover {
+  background: #eee;
+}
+
+.controls .control.active {
+  background: #cecece;
+}
+
+.popup-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1030;
+}
+
+.popup {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 15px #ccc;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.popup .head {
+  font-size: 25px;
+  color: #666;
+  text-align: center;
+  width: 100%;
+}
+
+.popup .setting {
+  margin-top: 15px;
+  width: 100%;
+}
+
+.popup label {
+  font-size: 14px;
+}
+
+.popup input {
+  width: 100%;
+  height: 45px;
+  background: #f6f6f6;
+  border-radius: 0.25rem;
+  outline: 0;
+  border: 0;
+  padding: 15px;
+  font-size: 16px;
+  margin-top: 5px;
+  transition: 0.3s;
+}
+
+.popup button {
+  width: 50%;
+  height: 45px;
+  background: #f6f6f6;
+  border: 0;
+  outline: 0;
+  border-radius: 0.25rem;
+  margin-top: 20px;
+  color: #666;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.popup input:focus,
+.popup button:hover {
+  background: #f1f1f1;
+}
