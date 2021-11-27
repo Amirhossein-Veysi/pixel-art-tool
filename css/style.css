@@ -58,6 +58,10 @@ header .brand:hover {
   transition: 0.3s;
 }
 
+.controls .control.selected{
+    background: #ccc;
+}
+
 .controls .control input{
     width: 90%;
     margin-top: 7px;
@@ -155,5 +159,5 @@ main{
 }
 
 main canvas{
-    /* margin-top: 150px; */
+    cursor: url(../img/brush.svg), pointer;
 }

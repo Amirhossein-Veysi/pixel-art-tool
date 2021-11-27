@@ -14,11 +14,15 @@
       </header>
       <div class="sidebar">
         <div class="controls">
-          <div class="control">Brush</div>
-          <div class="control">Eraser</div>
+          <div class="control selected" data-tool="brush">Brush</div>
+          <div class="control" data-tool="eraser">Eraser</div>
           <div class="control">
-            <label for="brush-color">PIXEL SIZE</label>
-            <input id="brush-color" type="color" min="1" />
+            <label for="brush-color">Brush Color</label>
+            <input id="brush-color" type="color" />
+          </div>
+          <div class="control">
+            <label for="board-color">Board Color</label>
+            <input id="board-color" type="color" />
           </div>
           <div class="control">Download</div>
         </div>

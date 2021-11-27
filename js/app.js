@@ -2,7 +2,9 @@ const $ = document; // For shorter code
 const artBoardWidthInp = $.querySelector("#board-width");
 const artBoardHeightInp = $.querySelector("#board-height");
 const brushColorInp = $.querySelector("#brush-color");
+const boardColorInp = $.querySelector("#board-color");
 const popUp = $.querySelector(".popup");
+const controls = $.querySelectorAll('.control[data-tool]');
 let canvas = null;
 let grid = null;
 let cols = 0;
@@ -11,9 +13,23 @@ let boxSize = 31;
 let selectedColor = null;
 let pressed = false;
 let temporaryColor = null;
+let boardColor = 255;
+let tool = 'brush';
 
 brushColorInp.addEventListener("change", () => {
   selectedColor = brushColorInp.value;
+});
+
+boardColorInp.addEventListener("change", () => {
+  boardColor = boardColorInp.value;
+});
+
+controls.forEach(el => {
+    el.addEventListener('click', () => {
+        controls.forEach(el => el.classList.remove('selected'));
+        el.classList.add('selected');
+        tool = el.dataset.tool;
+    })
 });
 
 popUp.addEventListener("submit", (event) => {
@@ -41,7 +57,7 @@ popUp.addEventListener("submit", (event) => {
 });
 
 function Pixel(x, y) {
-  this.color = 255;
+  this.color = boardColor;
   this.colored = false;
 
   this.show = function () {
@@ -68,22 +84,22 @@ function draw() {
         mouseX < y * boxSize + boxSize
       ) {
         if (pressed) {
-          grid[y][x].colored = true;
-          grid[y][x].color = selectedColor;
+          grid[y][x].colored = tool == 'brush';
+          grid[y][x].color = tool == 'brush' ? selectedColor : boardColor;
           grid[y][x].show();
         }
-        if (grid[y][x].colored){
-            temporaryColor = {x, y, color : grid[y][x].color};
+        if (grid[y][x].colored) {
+          temporaryColor = { x, y, color: grid[y][x].color };
         }
-        grid[y][x].color = selectedColor;
+        grid[y][x].color = tool == 'brush' ? selectedColor : boardColor;
       } else {
-        if (temporaryColor){
-            grid[temporaryColor.y][temporaryColor.x].color = temporaryColor.color;
-            temporaryColor = null;
+        if (temporaryColor) {
+          grid[temporaryColor.y][temporaryColor.x].color = temporaryColor.color;
+          temporaryColor = null;
         }
         if (!grid[y][x].colored) {
-          grid[y][x].color = 255;
-        } 
+          grid[y][x].color = boardColor;
+        }
       }
       grid[y][x].show();
     }
