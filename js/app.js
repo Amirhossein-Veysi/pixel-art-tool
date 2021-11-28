@@ -1,11 +1,3 @@
-const $ = document; // For shorter code
-const artBoardWidthInp = $.querySelector("#board-width");
-const artBoardHeightInp = $.querySelector("#board-height");
-const brushColorInp = $.querySelector("#brush-color");
-const boardColorInp = $.querySelector("#board-color");
-const popUp = $.querySelector(".popup");
-const controls = $.querySelectorAll('.control[data-tool]');
-let canvas = null;
 let grid = null;
 let cols = 0;
 let rows = 0;
@@ -14,47 +6,57 @@ let selectedColor = null;
 let pressed = false;
 let temporaryColor = null;
 let boardColor = 255;
-let tool = 'brush';
+let tool = "brush";
 
-brushColorInp.addEventListener("change", () => {
-  selectedColor = brushColorInp.value;
-});
+function setup() {
+  let canvas = createCanvas();
+  const artBoardWidthInp = select("#board-width");
+  const artBoardHeightInp = select("#board-height");
+  const brushColorInp = select("#brush-color");
+  const boardColorInp = select("#board-color");
+  const popUpBtn = select(".popup button");
+  const controls = selectAll(".control[data-tool]");
 
-boardColorInp.addEventListener("change", () => {
-  boardColor = boardColorInp.value;
-});
+  selectedColor = color(brushColorInp.value());
 
-controls.forEach(el => {
-    el.addEventListener('click', () => {
-        controls.forEach(el => el.classList.remove('selected'));
-        el.classList.add('selected');
-        tool = el.dataset.tool;
-    })
-});
+  brushColorInp.changed(() => {
+    selectedColor = brushColorInp.value();
+  });
 
-popUp.addEventListener("submit", (event) => {
-  event.preventDefault();
+  boardColorInp.changed(() => {
+    boardColor = boardColorInp.value();
+  });
 
-  canvas.setAttribute("width", artBoardWidthInp.value + "px");
-  canvas.setAttribute("height", artBoardHeightInp.value + "px");
+  controls.forEach(el => {
+    el.mouseClicked((event) => {
+      console.log('clicked');
+      controls.forEach(el => el.removeClass('selected'));
+      event.target.classList.add("selected");
+      tool = event.target.dataset.tool;
+    });
+  });
 
-  canvas.removeAttribute("style");
-  $.querySelector(".popup-container").style.display = "none";
-  cols = Math.floor(canvas.width / boxSize);
-  rows = Math.floor(canvas.height / boxSize);
-  console.log(cols, rows);
-  grid = new Array(cols);
+  popUpBtn.mouseClicked(() => {
+    resizeCanvas(artBoardWidthInp.value(), artBoardHeightInp.value());
 
-  for (let i = 0; i < cols; i++) {
-    grid[i] = new Array(rows);
-  }
+    canvas.removeAttribute("style");
+    select(".popup-container").style("display", "none");
+    cols = Math.floor(canvas.width / boxSize);
+    rows = Math.floor(canvas.height / boxSize);
+    console.log(cols, rows);
+    grid = new Array(cols);
 
-  for (let y = 0; y < cols; y++) {
-    for (let x = 0; x < rows; x++) {
-      grid[y][x] = new Pixel(y, x);
+    for (let i = 0; i < cols; i++) {
+      grid[i] = new Array(rows);
     }
-  }
-});
+
+    for (let y = 0; y < cols; y++) {
+      for (let x = 0; x < rows; x++) {
+        grid[y][x] = new Pixel(y, x);
+      }
+    }
+  });
+}
 
 function Pixel(x, y) {
   this.color = boardColor;
@@ -67,13 +69,6 @@ function Pixel(x, y) {
   };
 }
 
-function setup() {
-  createCanvas();
-  canvas = $.querySelector("#defaultCanvas0");
-
-  selectedColor = color(brushColorInp.value);
-}
-
 function draw() {
   for (let y = 0; y < cols; y++) {
     for (let x = 0; x < rows; x++) {
@@ -84,14 +79,14 @@ function draw() {
         mouseX < y * boxSize + boxSize
       ) {
         if (pressed) {
-          grid[y][x].colored = tool == 'brush';
-          grid[y][x].color = tool == 'brush' ? selectedColor : boardColor;
+          grid[y][x].colored = tool == "brush";
+          grid[y][x].color = tool == "brush" ? selectedColor : boardColor;
           grid[y][x].show();
         }
         if (grid[y][x].colored) {
           temporaryColor = { x, y, color: grid[y][x].color };
         }
-        grid[y][x].color = tool == 'brush' ? selectedColor : boardColor;
+        grid[y][x].color = tool == "brush" ? selectedColor : boardColor;
       } else {
         if (temporaryColor) {
           grid[temporaryColor.y][temporaryColor.x].color = temporaryColor.color;
@@ -112,4 +107,8 @@ function mousePressed() {
 
 function mouseReleased() {
   pressed = false;
+}
+
+function downloadFile() {
+  saveCanvas(c, "pixel-art", "jpg");
 }
