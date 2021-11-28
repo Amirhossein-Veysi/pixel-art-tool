@@ -15,22 +15,28 @@ function setup() {
   const brushColorInp = select("#brush-color");
   const boardColorInp = select("#board-color");
   const popUpBtn = select(".popup button");
+  const downloadBtn = select("#download-btn");
   const controls = selectAll(".control[data-tool]");
 
   selectedColor = color(brushColorInp.value());
 
+  
   brushColorInp.changed(() => {
     selectedColor = brushColorInp.value();
   });
-
+  
   boardColorInp.changed(() => {
     boardColor = boardColorInp.value();
   });
 
-  controls.forEach(el => {
+  downloadBtn.mouseClicked(() => {
+    saveCanvas(canvas, 'pixel-art', 'jpg');
+  });
+  
+  controls.forEach((el) => {
     el.mouseClicked((event) => {
-      console.log('clicked');
-      controls.forEach(el => el.removeClass('selected'));
+      console.log("clicked");
+      controls.forEach((el) => el.removeClass("selected"));
       event.target.classList.add("selected");
       tool = event.target.dataset.tool;
     });
