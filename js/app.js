@@ -2,7 +2,7 @@ let grid = null;
 let cols = 0;
 let rows = 0;
 let boxSize = 31;
-let selectedColor = null;
+let selectedColor = 000;
 let pressed = false;
 let temporaryColor = null;
 let boardColor = 255;
@@ -17,9 +17,6 @@ function setup() {
   const popUpBtn = select(".popup button");
   const downloadBtn = select("#download-btn");
   const controls = selectAll(".control[data-tool]");
-
-  selectedColor = color(brushColorInp.value());
-
   
   brushColorInp.changed(() => {
     selectedColor = brushColorInp.value();
@@ -45,10 +42,9 @@ function setup() {
   popUpBtn.mouseClicked(() => {
     resizeCanvas(artBoardWidthInp.value(), artBoardHeightInp.value());
 
-    canvas.removeAttribute("style");
     select(".popup-container").style("display", "none");
-    cols = Math.floor(canvas.width / boxSize);
-    rows = Math.floor(canvas.height / boxSize);
+    cols = Math.floor(width / boxSize);
+    rows = Math.floor(height / boxSize);
     console.log(cols, rows);
     grid = new Array(cols);
 
@@ -87,7 +83,6 @@ function draw() {
         if (pressed) {
           grid[y][x].colored = tool == "brush";
           grid[y][x].color = tool == "brush" ? selectedColor : boardColor;
-          grid[y][x].show();
         }
         if (grid[y][x].colored) {
           temporaryColor = { x, y, color: grid[y][x].color };
@@ -113,8 +108,4 @@ function mousePressed() {
 
 function mouseReleased() {
   pressed = false;
-}
-
-function downloadFile() {
-  saveCanvas(c, "pixel-art", "jpg");
 }
