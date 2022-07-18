@@ -17,22 +17,21 @@ function setup() {
   const popUpBtn = select(".popup button");
   const downloadBtn = select("#download-btn");
   const controls = selectAll(".control[data-tool]");
-  
+
   brushColorInp.changed(() => {
     selectedColor = brushColorInp.value();
   });
-  
+
   boardColorInp.changed(() => {
     boardColor = boardColorInp.value();
   });
 
   downloadBtn.mouseClicked(() => {
-    saveCanvas(canvas, 'pixel-art', 'jpg');
+    saveCanvas(canvas, "pixel-art", "jpg");
   });
-  
+
   controls.forEach((el) => {
     el.mouseClicked((event) => {
-      console.log("clicked");
       controls.forEach((el) => el.removeClass("selected"));
       event.target.classList.add("selected");
       tool = event.target.dataset.tool;
@@ -40,12 +39,14 @@ function setup() {
   });
 
   popUpBtn.mouseClicked(() => {
-    resizeCanvas(artBoardWidthInp.value(), artBoardHeightInp.value());
+    resizeCanvas(
+      artBoardWidthInp.value() - (artBoardWidthInp.value() % boxSize),
+      artBoardHeightInp.value() - (artBoardHeightInp.value() % boxSize)
+    );
 
     select(".popup-container").style("display", "none");
     cols = Math.floor(width / boxSize);
     rows = Math.floor(height / boxSize);
-    console.log(cols, rows);
     grid = new Array(cols);
 
     for (let i = 0; i < cols; i++) {
